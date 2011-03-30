@@ -68,7 +68,13 @@ class Statsd
   class DummyClient
     def self.timing(*args)
     end
-    
+
+    def self.increment(*args)
+    end
+
+    def self.decrement(*args)
+    end
+
     def self.update_stats(*args)
     end
   end
