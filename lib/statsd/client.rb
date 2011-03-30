@@ -64,14 +64,15 @@ class Statsd
   
   class Client
     VERSION = File.read( File.join(File.dirname(__FILE__),'..', '..', 'VERSION') ).strip
-    attr_reader :host, :port
+    attr_reader :host, :port, :prefix
 
     # Initializes a Statsd client.
     #
     # @param [String] host
     # @param [Integer] port
-    def initialize(host = 'localhost', port = 8125)
+    def initialize(host = 'localhost', port = 8125, prefix = '')
       @host, @port = host, port
+      @prefix = prefix.present? ? prefix + '.' : ''
     end
 
     # Sends timing statistics.
@@ -114,7 +115,7 @@ class Statsd
       stats.each do |stat|
         # if it's got a |ms in it, we know it's a timing stat, so don't append
         # the |c.
-        data[stat] = delta.include?('|ms') ? delta : "#{delta}|c"
+        data[self.prefix+stat] = delta.include?('|ms') ? delta : "#{delta}|c"
       end
 
       send(data, sample_rate)
