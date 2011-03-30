@@ -69,6 +69,9 @@ class Statsd
     def self.timing(*args)
     end
 
+    def timing_from(*args)
+    end
+
     def self.increment(*args)
     end
 
@@ -101,6 +104,16 @@ class Statsd
     def timing(stats, time, sample_rate = 1)
       data = "#{time}|ms"
       update_stats(stats, data, sample_rate)
+    end
+
+    # Sends timing statistics.
+    #
+    # @param [Array, String] stats name of statistic(s) being updated
+    # @param [Integer] time when measured action started in miliseconds (start_time = Time.now)
+    # @param [Integer, Float] sample_rate
+    def timing_from(stats, time_from, sample_rate = 1)
+      time_now = Time.now
+      timing(stats, (1000 * (time_now-time_from)).to_i)
     end
 
     # Increments a counter
