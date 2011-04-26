@@ -69,7 +69,7 @@ class Statsd
     def self.timing(*args)
     end
 
-    def timing_from(*args)
+    def self.timing_from(*args)
     end
 
     def self.increment(*args)
